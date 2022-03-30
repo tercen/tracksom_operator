@@ -1,28 +1,62 @@
-library(tercenApi)
 library(tercen)
 library(dplyr)
-library(progressr)
-library("future.apply")
-
-# options("tercen.serviceUri"="http://172.28.0.1:5400/api/v1/")
-# # http://127.0.0.1:5400/test-team/w/073510448c675ef923a0b55ca20ba1c0/ds/9fb0dd32-20d1-4daa-8701-e5766bfb425c
-# options("tercen.workflowId"= "073510448c675ef923a0b55ca20ba1c0")
-# options("tercen.stepId"= "9fb0dd32-20d1-4daa-8701-e5766bfb425c")
+library(TrackSOM)
+library(data.table)
+# options("tercen.workflowId"= "7132ce367ee5df28fea4032b3f011888")
+# options("tercen.stepId"= "426b00e4-b970-4042-9a53-93a10ac2da90")
 
 ctx = tercenCtx()
 
-nCpus = availableCores() 
-nCpusRequested = 4
-ctx$requestResources(nCpus=nCpusRequested)
-nCpusReceived = availableCores() 
+seed <- NULL
+if(!is.null(ctx$op.value('seed')) && !ctx$op.value('seed') < 0) seed <- as.integer(ctx$op.value('seed'))
 
-msg = paste0("nCpus=" , nCpus , " nCpusRequested=", nCpusRequested, " nCpusReceived=", nCpusReceived)
+set.seed(seed)
 
-ctx$log(msg)
+nclust <- NULL
+if(!is.null(ctx$op.value('nclust')) && !ctx$op.value('nclust') == "NULL") nclust <- as.integer(ctx$op.value('nclust'))
 
-ctx  %>%
-  select(.y, .ci, .ri) %>%
-  group_by(.ci, .ri) %>%
-  summarise(mean = mean(.y)) %>%
+stopifnot("Two factors need to be projected onto columns." = ncol(ctx$cselect()) == 2)
+
+ctx$colors
+
+df <- ctx %>% 
+  as.matrix() %>%
+  t() 
+
+colnames(df) <- ctx$rselect()[[1]]
+df <- data.table::data.table(df)
+df[[".ci"]] <- seq_len(nrow(df)) - 1
+
+timepoints <- unique(ctx$cselect()[[1]])
+
+df_list <- lapply(timepoints, function(x) {
+  df_tmp <- df[ctx$cselect()[[1]] %in% x, ]
+  df_tmp[["timepoint"]] <- x
+  return(df_tmp)
+})
+
+tracksom.result <- TrackSOM(
+  inputFiles = df_list,
+  colsToUse = colnames(df_list[[1]])[!colnames(df_list[[1]]) %in% c("timepoint", ".ci")],
+  tracking = TRUE,
+  noMerge = TRUE,
+  nClus = NULL,
+  maxMeta = 10,
+  dataFileType = "data.frame"
+)
+
+df_cat <- data.table::rbindlist(df_list)
+
+df_out <- ExportClusteringDetailsOnly(tracksom.result)
+df_out[[".ci"]] <- seq_len(nrow(df_out)) - 1
+
+df_out %>%
+  rename(
+    cluster_id = TrackSOM_cluster,
+    metacluster_id = TrackSOM_metacluster,
+    metacluster_lineage_tracking = TrackSOM_metacluster_lineage_tracking
+  ) %>%
   ctx$addNamespace() %>%
   ctx$save()
+
+
