@@ -4,6 +4,6 @@
 "tags": [""],
 "authors": ["tercen"],
 "urls": ["https://github.com/tercen/tracksom_operator"],
-"container":"tercen/tracksom_operator:0.0.1",
+"container":"tercen/tracksom_operator:0.0.2",
 "properties": [ ]
 }
