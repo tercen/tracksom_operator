@@ -1,36 +1,42 @@
+# TrackSOM operator
 
-# build
+##### Description
 
-```shell
-VERSION=0.14.0
-docker build -t tercen/simple_docker_operator:$VERSION .
-docker push tercen/simple_docker_operator:$VERSION
-# update operator.json file with correct docker image version
-{
-        echo '{'
-        echo '"name": "simple docker operator",'
-        echo '"description": "simple docker operator",'
-        echo '"tags": [""],'
-        echo '"authors": ["tercen"],'
-        echo '"urls": ["https://github.com/tercen/simple_docker_operator"],'
-        echo '"container":"tercen/simple_docker_operator:'$VERSION'",'  
-        echo '"properties": [ ]'
-        echo '}'
-} > operator.json
+`TrackSOM`: An algorithm that clusters cells based on chosen channels and maps them into populations.
 
-git add -A && git commit -m "$VERSION" && git tag $VERSION && git push && git push --tags
+##### Usage
 
-```
+Input projection|.
+---|---
+`row1`   | represents the timepoint (e.g. measurement day)
+`row2`   | represents the variables (e.g. channels, markers)
+`col`   | represents the clusters (e.g. cells) 
+`y-axis`| is the value of measurement signal of the channel/marker
 
-# inspect
+Input parameters|.
+---|---
+`nclust`   | Number of clusters to make (default = `NULL`)
+`maxMeta`   | Maximal number of cluster (ignored if `nclust` is not `NULL`)
+`seed`   | Random seed
+`xdim`   | Width of the grid
+`ydim`   | Hight of the grid
+`rlen`| Number of times to loop over the training data for each MST
+`mst`| Number of times to build an MST
+`alpha_start`| Start learning rate
+`alpha_end`|  End learning rate
+`distf`| Distance function (1=manhattan, 2=euclidean, 3=chebyshev, 4=cosine)
 
-```shell
-docker run --rm --entrypoint=bash tercen/simple_docker_operator:$VERSION -c "R --version"
-docker run -it --rm --entrypoint=bash tercen/simple_docker_operator:$VERSION
-```
- 
-# push
 
-```shell
-docker push tercen/simple_docker_operator:$VERSION
-```
+Output relations|.
+---|---
+`cluster_id`| character, cluster ID
+`metacluster_id`| character, metacluster ID
+`metacluster_lineage_tracking`| character, metacluster lineage tracking
+
+##### Details
+
+The operator is a wrapper for the `TrackSOM` function of the `TrackSOM` [R package](https://github.com/ghar1821/TrackSOM). 
+
+##### See Also
+
+[flowsom_operator](https://github.com/tercen/flowsom_operator)

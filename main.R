@@ -1,4 +1,5 @@
 library(tercen)
+library(tercenApi)
 library(dplyr)
 library(TrackSOM)
 library(data.table)
@@ -14,10 +15,23 @@ set.seed(seed)
 
 nclust <- NULL
 if(!is.null(ctx$op.value('nclust')) && !ctx$op.value('nclust') == "NULL") nclust <- as.integer(ctx$op.value('nclust'))
+maxMeta <- NULL
+if(!is.null(ctx$op.value('maxMeta')) && !ctx$op.value('maxMeta') == "NULL") maxMeta <- as.integer(ctx$op.value('maxMeta'))
+
+if(is.null(maxMeta) & is.null(nclust)) maxMeta <- 10
+
+xdim   = ifelse(is.null(ctx$op.value('xdim')), 10, as.integer(ctx$op.value('xdim')))
+ydim   = ifelse(is.null(ctx$op.value('ydim')), 10, as.integer(ctx$op.value('ydim')))
+rlen   = ifelse(is.null(ctx$op.value('rlen')), 10, as.integer(ctx$op.value('rlen')))
+mst    = ifelse(is.null(ctx$op.value('mst')), 1, as.integer(ctx$op.value('mst')))
+alpha  = c(
+  ifelse(is.null(ctx$op.value('alpha_1')), 0.05, as.double(ctx$op.value('alpha_1'))),
+  ifelse(is.null(ctx$op.value('alpha_2')), 0.01, as.double(ctx$op.value('alpha_2')))
+)
+distf  = ifelse(is.null(ctx$op.value('distf')), 2, as.integer(ctx$op.value('distf')))
+
 
 stopifnot("Two factors need to be projected onto columns." = ncol(ctx$cselect()) == 2)
-
-ctx$colors
 
 df <- ctx %>% 
   as.matrix() %>%
@@ -40,8 +54,14 @@ tracksom.result <- TrackSOM(
   colsToUse = colnames(df_list[[1]])[!colnames(df_list[[1]]) %in% c("timepoint", ".ci")],
   tracking = TRUE,
   noMerge = TRUE,
-  nClus = NULL,
-  maxMeta = 10,
+  nClus = nclust,
+  xdim = xdim,
+  ydim = ydim,
+  maxMeta = maxMeta,
+  rlen = rlen,
+  mst = mst,
+  alpha = alpha,
+  distf = distf,
   dataFileType = "data.frame"
 )
 
