@@ -39,7 +39,7 @@ mat <- ctx %>%
 
 colnames(mat) <- ctx$rselect()[[1]]
 df <- as_tibble(mat) %>%
-  mutate(.ci = seq_len(nrow(df)) - 1)
+  mutate(.ci = seq_len(nrow(.)) - 1)
 
 col1_values <- ctx$cselect()[[1]]
 timepoints <- unique(col1_values)
