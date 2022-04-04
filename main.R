@@ -3,8 +3,8 @@ library(tercen)
 library(dplyr)
 library(TrackSOM)
 library(data.table)
-# options("tercen.workflowId"= "7132ce367ee5df28fea4032b3f011888")
-# options("tercen.stepId"= "426b00e4-b970-4042-9a53-93a10ac2da90")
+# options("tercen.workflowId"= "c9b128311c1a99b2e1248092ef00d5a0")
+# options("tercen.stepId"= "d235974b-f9f1-4b53-be1a-26f4195dd32d")
 
 ctx = tercenCtx()
 
@@ -33,21 +33,23 @@ distf  = ifelse(is.null(ctx$op.value('distf')), 2, as.integer(ctx$op.value('dist
 
 stopifnot("Two factors need to be projected onto columns." = ncol(ctx$cselect()) == 2)
 
-df <- ctx %>% 
+mat <- ctx %>% 
   as.matrix() %>%
   t() 
 
-colnames(df) <- ctx$rselect()[[1]]
-df <- data.table::data.table(df)
-df[[".ci"]] <- seq_len(nrow(df)) - 1
+colnames(mat) <- ctx$rselect()[[1]]
+df <- as_tibble(mat) %>%
+  mutate(.ci = seq_len(nrow(df)) - 1)
 
 col1_values <- ctx$cselect()[[1]]
 timepoints <- unique(col1_values)
 
 df_list <- lapply(timepoints, function(x) {
+  cond <- col1_values == x
   df_tmp <- df %>%
-    filter(col1_values == x) %>%
+    filter(cond) %>%
     mutate(timepoint = x)
+  df_tmp <- data.table::data.table(df_tmp)
   return(df_tmp)
 })
 
