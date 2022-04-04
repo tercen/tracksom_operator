@@ -4,8 +4,20 @@
 "tags": ["flow cytometry", "clustering"],
 "authors": ["tercen"],
 "urls": ["https://github.com/tercen/tracksom_operator"],
-"container":"tercen/tracksom_operator:0.0.5",
+"container":"tercen/tracksom_operator:0.0.6",
   "properties": [
+  {
+    "kind": "BooleanProperty",
+    "name": "tracking",
+    "defaultValue": true,
+    "description": "Whether to track cluster changes (TRUE), or just cluster (FALSE)."
+  },
+  {
+    "kind": "BooleanProperty",
+    "name": "noMerge",
+    "defaultValue": false,
+    "description": "Whether to allow meta-cluster merging (FALSE) or not (TRUE)."
+  },
    {
     "kind": "StringProperty",
     "name": "nclust",

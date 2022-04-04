@@ -20,6 +20,10 @@ if(!is.null(ctx$op.value('maxMeta')) && !ctx$op.value('maxMeta') == "NULL") maxM
 
 if(is.null(maxMeta) & is.null(nclust)) maxMeta <- 10
 
+tracking  = ifelse(is.null(ctx$op.value('tracking')), TRUE, as.logical(ctx$op.value('tracking')))
+if(!tracking) tracking <- NULL
+noMerge   = ifelse(is.null(ctx$op.value('noMerge')), FALSE, as.logical(ctx$op.value('noMerge')))
+
 xdim   = ifelse(is.null(ctx$op.value('xdim')), 10, as.integer(ctx$op.value('xdim')))
 ydim   = ifelse(is.null(ctx$op.value('ydim')), 10, as.integer(ctx$op.value('ydim')))
 rlen   = ifelse(is.null(ctx$op.value('rlen')), 10, as.integer(ctx$op.value('rlen')))
@@ -56,8 +60,8 @@ df_list <- lapply(timepoints, function(x) {
 tracksom.result <- TrackSOM(
   inputFiles = df_list,
   colsToUse = colnames(df_list[[1]])[!colnames(df_list[[1]]) %in% c("timepoint", ".ci")],
-  tracking = TRUE,
-  noMerge = TRUE,
+  tracking = tracking,
+  noMerge = noMerge,
   nClus = nclust,
   xdim = xdim,
   ydim = ydim,
