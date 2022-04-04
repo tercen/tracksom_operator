@@ -1,5 +1,5 @@
 library(tercen)
-library(tercenApi)
+# library(tercenApi)
 library(dplyr)
 library(TrackSOM)
 library(data.table)
@@ -41,11 +41,13 @@ colnames(df) <- ctx$rselect()[[1]]
 df <- data.table::data.table(df)
 df[[".ci"]] <- seq_len(nrow(df)) - 1
 
-timepoints <- unique(ctx$cselect()[[1]])
+col1_values <- ctx$cselect()[[1]]
+timepoints <- unique(col1_values)
 
 df_list <- lapply(timepoints, function(x) {
-  df_tmp <- df[ctx$cselect()[[1]] %in% x, ]
-  df_tmp[["timepoint"]] <- x
+  df_tmp <- df %>%
+    filter(col1_values == x) %>%
+    mutate(timepoint = x)
   return(df_tmp)
 })
 
