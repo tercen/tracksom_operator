@@ -8,8 +8,8 @@
 
 Input projection|.
 ---|---
-`row1`   | represents the timepoint (e.g. measurement day)
-`row2`   | represents the variables (e.g. channels, markers)
+`column1`   | represents the timepoint (e.g. measurement day)
+`column2`   | represents the variables (e.g. channels, markers)
 `col`   | represents the clusters (e.g. cells) 
 `y-axis`| is the value of measurement signal of the channel/marker
 
