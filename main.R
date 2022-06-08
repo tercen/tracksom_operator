@@ -84,6 +84,10 @@ df_out %>%
     metacluster_id = TrackSOM_metacluster,
     metacluster_lineage_tracking = TrackSOM_metacluster_lineage_tracking
   ) %>%
+  mutate(
+    cluster_number = as.integer(cluster_id), 
+    metacluster_number = as.integer(metacluster_id)
+  ) %>%
   ctx$addNamespace() %>%
   ctx$save()
 
