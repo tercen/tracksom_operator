@@ -1,10 +1,10 @@
 {
-"name": "TrackSOM operator",
+"name": "TrackSOM",
 "description": "TrackSOM clustering method.",
 "tags": ["flow cytometry", "clustering"],
 "authors": ["tercen"],
 "urls": ["https://github.com/tercen/tracksom_operator"],
-"container":"tercen/tracksom_operator:0.0.8",
+"container":"tercen/tracksom_operator:0.1.0",
   "properties": [
   {
     "kind": "BooleanProperty",
