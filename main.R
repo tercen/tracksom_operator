@@ -76,7 +76,7 @@ tracksom.result <- TrackSOM(
 df_cat <- data.table::rbindlist(df_list)
 
 df_out <- ExportClusteringDetailsOnly(tracksom.result)
-df_out[[".ci"]] <- seq_len(nrow(df_out)) - 1
+df_out[[".ci"]] <- seq_len(nrow(df_out)) - 1L
 
 df_out %>%
   rename(
