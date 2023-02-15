@@ -1,17 +1,16 @@
 library(tercen)
-# library(tercenApi)
+library(tercenApi)
 library(dplyr)
 library(TrackSOM)
 library(data.table)
-# options("tercen.workflowId"= "c9b128311c1a99b2e1248092ef00d5a0")
-# options("tercen.stepId"= "d235974b-f9f1-4b53-be1a-26f4195dd32d")
 
 ctx = tercenCtx()
 
-seed <- NULL
-if(!is.null(ctx$op.value('seed')) && !ctx$op.value('seed') < 0) seed <- as.integer(ctx$op.value('seed'))
-
-set.seed(seed)
+seed <- -1
+if(!is.null(ctx$op.value('seed')) && !ctx$op.value('seed') < 0) {
+  seed <- as.integer(ctx$op.value('seed'))
+  set.seed(seed)
+}
 
 nclust <- NULL
 if(!is.null(ctx$op.value('nclust')) && !ctx$op.value('nclust') == "NULL") nclust <- as.integer(ctx$op.value('nclust'))
