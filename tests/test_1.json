@@ -19,7 +19,7 @@
     {
       "kind": "PropertyValue",
       "name": "seed",
-      "value": 42
+      "value": "42"
     }
   ],
   "relTol": 1e-05
