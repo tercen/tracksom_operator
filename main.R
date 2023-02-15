@@ -78,6 +78,10 @@ df_out <- ExportClusteringDetailsOnly(tracksom.result)
 df_out[[".ci"]] <- seq_len(nrow(df_out)) - 1L
 
 df_out %>%
+  mutate(
+    TrackSOM_metacluster = as.integer(TrackSOM_metacluster),
+    TrackSOM_metacluster_lineage_tracking = as.character(TrackSOM_metacluster_lineage_tracking)
+  ) %>%
   rename(
     cluster_id = TrackSOM_cluster,
     metacluster_id = TrackSOM_metacluster,
