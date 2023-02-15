@@ -1,0 +1,15 @@
+{
+  "kind": "TableSchema",
+  "columns": [
+    {
+      "kind": "ColumnSchema",
+      "name": "color",
+      "type": "string"
+    },
+    {
+      "kind": "ColumnSchema",
+      "name": "observation",
+      "type": "double"
+    }
+  ]
+}

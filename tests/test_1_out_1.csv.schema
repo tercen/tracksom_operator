@@ -1,0 +1,40 @@
+{
+  "kind": "TableSchema",
+  "columns": [
+    {
+      "kind": "ColumnSchema",
+      "name": "ds0.cluster_id",
+      "type": "int32"
+    },
+    {
+      "kind": "ColumnSchema",
+      "name": "ds0.timepoint",
+      "type": "string"
+    },
+    {
+      "kind": "ColumnSchema",
+      "name": "ds0.metacluster_id",
+      "type": {}
+    },
+    {
+      "kind": "ColumnSchema",
+      "name": "ds0.metacluster_lineage_tracking",
+      "type": {}
+    },
+    {
+      "kind": "ColumnSchema",
+      "name": ".ci",
+      "type": "int32"
+    },
+    {
+      "kind": "ColumnSchema",
+      "name": "ds0.cluster_number",
+      "type": "int32"
+    },
+    {
+      "kind": "ColumnSchema",
+      "name": "ds0.metacluster_number",
+      "type": "int32"
+    }
+  ]
+}
