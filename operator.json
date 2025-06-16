@@ -4,7 +4,7 @@
 "tags": ["flow cytometry", "clustering"],
 "authors": ["tercen"],
 "urls": ["https://github.com/tercen/tracksom_operator"],
-"container":"tercen/tracksom_operator:0.1.5",
+"container": "tercen/tracksom_operator:0.1.5",
   "properties": [
   {
     "kind": "BooleanProperty",
@@ -18,7 +18,7 @@
     "defaultValue": false,
     "description": "Whether to allow meta-cluster merging (FALSE) or not (TRUE)."
   },
-   {
+  {
     "kind": "StringProperty",
     "name": "nclust",
     "defaultValue": "NULL",
@@ -28,7 +28,7 @@
     "kind": "StringProperty",
     "name": "maxMeta",
     "defaultValue": "NULL",
-    "description": "Maximal number of clusters (if specified, nclust is ignored). If both nclust and masMeta are NULL, maxMeta is set to 10."
+    "description": "Maximal number of clusters (if specified, nclust is ignored). If both nclust and maxMeta are NULL, maxMeta is set to 10."
   },
   {
     "kind": "DoubleProperty",
@@ -60,7 +60,7 @@
     "defaultValue": 1,
     "description": "Amount of training"
   },
-   {
+  {
     "kind": "DoubleProperty",
     "name": "alpha_1",
     "defaultValue": 0.05,
@@ -78,5 +78,64 @@
     "defaultValue": 2,
     "description": "Distance setting"
   }
+  ],
+  "operatorSpec": {
+    "kind": "OperatorSpec",
+    "ontologyUri": "https://tercen.com/_ontology/tercen",
+    "ontologyVersion": "0.0.1",
+    "inputSpecs": [
+      {
+          "kind": "CrosstabSpec",
+          "metaFactors": [
+              {
+                  "kind": "MetaFactor",
+                  "name": "Timepoint",
+                  "type": "",
+                  "description": "Represents the timepoint (e.g. measurement day)",
+                  "ontologyMapping": "timepoint",
+                  "crosstabMapping": "column",
+                  "cardinality": "1..n",
+                  "factors": []
+              },
+              {
+                  "kind": "MetaFactor",
+                  "name": "Variables",
+                  "type": "",
+                  "description": "Represents the variables (e.g. channels, markers)",
+                  "ontologyMapping": "variable",
+                  "crosstabMapping": "column",
+                  "cardinality": "1..n",
+                  "factors": []
+              },
+              {
+                  "kind": "MetaFactor",
+                  "name": "Clusters",
+                  "type": "",
+                  "description": "Represents the clusters (e.g. cells)",
+                  "ontologyMapping": "observation",
+                  "crosstabMapping": "row",
+                  "cardinality": "1..n",
+                  "factors": []
+              }
+          ],
+          "axis": [
+              {
+                  "kind": "AxisSpec",
+                  "metaFactors": [
+                      {
+                          "kind": "MetaFactor",
+                          "name": "Measurement",
+                          "type": "numeric",
+                          "description": "Value of measurement signal of the channel/marker",
+                          "ontologyMapping": "measurement",
+                          "crosstabMapping": "y",
+                          "cardinality": "1",
+                          "factors": []
+                      }
+                  ]
+              }
+          ]
+      }
   ]
+  }
 }
