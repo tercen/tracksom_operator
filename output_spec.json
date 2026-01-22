@@ -1,0 +1,24 @@
+{
+  "outputSpecs": [{
+    "kind": "OperatorJoinSpec",
+    "joinOperators": [{
+      "kind": "JoinOperator",
+      "joinType": "left",
+      "leftPair": {
+        "kind": "ColumnPair",
+        "lColumns": ["Timepoint", "Observation"],
+        "rColumns": ["Timepoint", "Observation"]
+      },
+      "rightRelation": {
+        "kind": "TableRelation",
+        "attributes": [
+          {"kind": "Attribute", "name": "cluster_id", "type": "string"},
+          {"kind": "Attribute", "name": "metacluster_id", "type": "int32"},
+          {"kind": "Attribute", "name": "metacluster_lineage_tracking", "type": "string"},
+          {"kind": "Attribute", "name": "cluster_number", "type": "int32"},
+          {"kind": "Attribute", "name": "metacluster_number", "type": "int32"}
+        ]
+      }
+    }]
+  }]
+}
